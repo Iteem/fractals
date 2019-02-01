@@ -1,11 +1,11 @@
 import React from 'react';
 import { AutoSizer } from 'react-virtualized'
-import BarnsleyFern from "./impl/barnsleyFern"
-import KochCurve from "./impl/kochCurve"
-import SierpinskiCarpet from "./impl/sierpinskiCarpet"
-import Buddhabrot from "./impl/buddhabrot"
+import BarnsleyFern from "./fractals/barnsleyFern"
+import KochCurve from "./fractals/kochCurve"
+import SierpinskiCarpet from "./fractals/sierpinskiCarpet"
+import Buddhabrot from "./fractals/buddhabrot"
 import BuddhabrotOptions from './options/buddhabrotOptions';
-import Mandelbrot from "./impl/mandelbrot"
+import Mandelbrot from "./fractals/mandelbrot"
 import MandelbrotOptions from './options/mandelbrotOptions';
 import MandelbrotOverlay from './overlay/mandelbrotOverlay';
 

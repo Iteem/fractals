@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import 'bulma/css/bulma.css'
-import Fractals from "./fractals";
+import Fractals from "./components/fractals";
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(<Fractals />, document.getElementById('root'));

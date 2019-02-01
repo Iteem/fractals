@@ -1,4 +1,4 @@
-import {getNumIterations} from './utils';
+import {getNumIterations} from '../../../services/utils';
 
 // 50 is enough at the resolution of the importanceMap
 export const importanceMapMaxIterations = 50;
