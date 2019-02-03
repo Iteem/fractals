@@ -3,6 +3,7 @@ import * as scale from "d3-scale";
 import * as random from "d3-random";
 import ImportanceMapSamler, {importanceMapMaxIterations} from "./buddhabrot/importanceMapSampler"
 import KdTreeSampler from "./buddhabrot/kdTreeSampler"
+import {connect} from "react-redux";
 
 const maxIterationsArr = [5000, 500, 50]; // r, g, b
 const maxIterations = Math.max.apply(null, maxIterationsArr);
@@ -14,7 +15,13 @@ const drawWaitTime = 2000; // in ms
 const bailoutRadius = Math.pow(2, 3);
 const bailoutRadiusSqrd = bailoutRadius * bailoutRadius;
 
-export default class Buddhabrot extends React.Component {
+const mapStateToProps = state => {
+  return {
+    options: state.buddhabrot
+  }
+};
+
+class Buddhabrot extends React.Component {
   componentDidMount() {
     this.ct = {canceled: false};
     this.draw(this.ct);
@@ -186,12 +193,12 @@ export default class Buddhabrot extends React.Component {
             total += d[x + y * width]
           }
         }
-        return 10 * total / ((x1 - x0) * (y1 - y0)) / this.props.options.buddhabrot.exposure[i];
+        return 10 * total / ((x1 - x0) * (y1 - y0)) / this.props.options.exposure[i];
       });
 
       // This is a bit hacky and confusing
-      const indexFactor = this.props.options.buddhabrot.greyscale ? 0 : 1;
-      const gamma = this.props.options.buddhabrot.gamma;
+      const indexFactor = this.props.options.greyscale ? 0 : 1;
+      const gamma = this.props.options.gamma;
 
       for (let i = 0; i < data[0].length; i++) {
         imgData.data[4 * i] = 255 * Math.pow(Math.min(data[0][i] / maxValues[0], 1), gamma); // r
@@ -222,3 +229,5 @@ export default class Buddhabrot extends React.Component {
     return (<canvas height={this.props.height} width={this.props.width} ref={canvas => this.canvas = canvas}/>);
   }
 }
+
+export default connect(mapStateToProps)(Buddhabrot);

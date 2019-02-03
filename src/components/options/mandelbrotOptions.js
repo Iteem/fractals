@@ -1,6 +1,22 @@
 import React from "react"
+import {setMandelbrotOptions} from "../../actions/actions";
+import {connect} from "react-redux";
 
-export default class MandelbrotOptions extends React.Component {
+const mapStateToProps = state => {
+  return {
+    options: state.mandelbrot
+  }
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    setOptions: (options) => {
+      dispatch(setMandelbrotOptions(options));
+    }
+  };
+};
+
+class MandelbrotOptions extends React.Component {
   constructor() {
     super();
 
@@ -10,31 +26,21 @@ export default class MandelbrotOptions extends React.Component {
   }
 
   setColorScheme(event){
-    let options = {
-      mandelbrot: {
-        ...this.props.options.mandelbrot,
-        colorScheme: event.target.value
-      }
-    };
-    this.props.onChange(options);
+    this.props.setOptions({colorScheme: event.target.value});
   }
 
   resetZoom(){
-    let options = {
-      mandelbrot: {
-        ...this.props.options.mandelbrot,
-        xExtent: [-3, 2],
-        yCenter: 0,
-      }
-    };
-    this.props.onChange(options);
+    this.props.setOptions({
+      xExtent: [-3, 2],
+      yCenter: 0,
+    });
   }
 
   render() {
     return (
       <div className="content">
         <label form="colorScheme">Color Scheme: </label>
-        <select id="colorScheme" value={this.props.options.mandelbrot.colorScheme} onChange={this.setColorScheme}>
+        <select id="colorScheme" value={this.props.options.colorScheme} onChange={this.setColorScheme}>
           <option value="Blues">Blues</option>
           <option value="Oranges">Oranges</option>
           <option value="Greens">Greens</option>
@@ -80,3 +86,5 @@ export default class MandelbrotOptions extends React.Component {
     );
   }
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(MandelbrotOptions)

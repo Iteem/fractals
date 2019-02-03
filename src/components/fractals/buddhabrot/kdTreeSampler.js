@@ -17,7 +17,6 @@ export default class KdTreeSampler {
     //this.height = 2.6;
 
 
-    console.log(this.left, this.top, this.width, this.height)
     //this.tree = KdTreeSampler.getKdTree(0, -2, 1.2, 2.6, 0, 0, 0)
     this.tree = KdTreeSampler.getKdTree(this.left, this.top, this.width, this.height, 0, 0, 0)
   }

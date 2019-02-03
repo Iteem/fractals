@@ -3,7 +3,24 @@ import * as brush from "d3-brush";
 import * as selection from "d3-selection";
 import * as scale from "d3-scale";
 
-export default class MandelbrotOverlay extends React.Component {
+import {setMandelbrotOptions} from "../../actions/actions";
+import {connect} from "react-redux";
+
+const mapStateToProps = state => {
+  return {
+    options: state.mandelbrot
+  }
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    setOptions: (options) => {
+      dispatch(setMandelbrotOptions(options));
+    }
+  };
+};
+
+class MandelbrotOverlay extends React.Component {
   constructor() {
     super();
 
@@ -11,16 +28,11 @@ export default class MandelbrotOverlay extends React.Component {
   }
 
   setExtentAndCenter(xExtent, yCenter){
-    let options = {
-      mandelbrot: {
-        ...this.props.options.mandelbrot,
+    this.props.setOptions({
         xExtent: xExtent,
         yCenter: yCenter
-      }
-    };
-    this.props.onChange(options);
+    });
   }
-
 
   componentDidMount()
   {
@@ -43,18 +55,16 @@ export default class MandelbrotOverlay extends React.Component {
 
       const xScale = scale.scaleLinear()
         .domain([0, that.props.width])
-        .range(that.props.options.mandelbrot.xExtent);
+        .range(that.props.options.xExtent);
 
       const aspectRatio = that.props.width / that.props.height;
       const extent = (xScale.range()[1] - xScale.range()[0]) / aspectRatio / 2;
       const yScale = scale.scaleLinear()
         .domain([0, that.props.height])
-        .range([extent + that.props.options.mandelbrot.yCenter, -extent + that.props.options.mandelbrot.yCenter]);
+        .range([extent + that.props.options.yCenter, -extent + that.props.options.yCenter]);
 
       const xExtent = [xScale(event.selection[0][0]), xScale(event.selection[1][0])];
       const yCenter = (yScale(event.selection[0][1]) + yScale(event.selection[1][1])) / 2;
-
-      console.log(yCenter)
 
       that.setExtentAndCenter(xExtent, yCenter);
 
@@ -78,3 +88,5 @@ export default class MandelbrotOverlay extends React.Component {
     );
   }
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(MandelbrotOverlay)

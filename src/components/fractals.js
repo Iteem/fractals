@@ -8,61 +8,52 @@ import BuddhabrotOptions from './options/buddhabrotOptions';
 import Mandelbrot from "./fractals/mandelbrot"
 import MandelbrotOptions from './options/mandelbrotOptions';
 import MandelbrotOverlay from './overlay/mandelbrotOverlay';
+import {connect} from "react-redux";
+import {setGeneralOptions} from "../actions/actions";
 
-export default class Fractals extends React.Component {
+const mapStateToProps = state => {
+  return {
+    width: state.general.width,
+    height: state.general.height,
+    selectedFractal: state.general.selectedFractal
+  }
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    setDimensions: (width, height) => {
+      dispatch(setGeneralOptions({width, height}));
+    },
+    selectFractal: (fractal) => {
+      dispatch(setGeneralOptions({selectedFractal: fractal}));
+    }
+  };
+};
+
+class Fractals extends React.Component {
   constructor() {
     super();
 
     this.onResize = this.onResize.bind(this);
     this.selectFractal = this.selectFractal.bind(this);
-    this.setOptions = this.setOptions.bind(this);
-
-    this.state = {
-      width: 800,
-      height: 600,
-      options: {
-        mandelbrot: {
-          colorScheme: "Blues",
-          xExtent: [-3, 2],
-          yCenter: 0,
-        },
-        buddhabrot: {
-          greyscale: false,
-          exposure: [2.8, 3.2, 4.8], //r,g,b, empirically makes for a nice picture
-          gamma: 2
-        }
-      },
-      selectedFractal: "mandelbrot"
-    }
   }
 
   onResize(dimensions){
-    this.setState(dimensions);
+    this.props.setDimensions(dimensions.width, dimensions.height);
   }
 
   selectFractal(event){
-    this.setState({
-      selectedFractal: event.target.value
-    });
-  }
-
-  setOptions(options){
-    this.setState({
-      options: {
-        ...this.state.options,
-        ...options
-      }
-    });
+    this.props.selectFractal(event.target.value);
   }
 
   render() {
     let options;
-    switch (this.state.selectedFractal){
+    switch (this.props.selectedFractal){
       case "buddhabrot":
-        options = (<BuddhabrotOptions options={this.state.options} onChange={this.setOptions}/>);
+        options = (<BuddhabrotOptions/>);
         break;
       case "mandelbrot":
-        options = (<MandelbrotOptions options={this.state.options} onChange={this.setOptions}/>);
+        options = (<MandelbrotOptions/>);
         break;
       default:
         options = null;
@@ -74,22 +65,22 @@ export default class Fractals extends React.Component {
           {({ height, width }) => {
             let overlay = null;
             let fractal = null;
-            switch (this.state.selectedFractal){
+            switch (this.props.selectedFractal){
               case "barnsleyFern":
-                fractal = (<BarnsleyFern width={this.state.width} height={this.state.height}/>);
+                fractal = (<BarnsleyFern width={this.props.width} height={this.props.height}/>);
                 break;
               case "buddhabrot":
-                fractal = (<Buddhabrot options={this.state.options} width={this.state.width} height={this.state.height}/>);
+                fractal = (<Buddhabrot width={this.props.width} height={this.props.height}/>);
                 break;
               case "kochCurve":
-                fractal = (<KochCurve width={this.state.width} height={this.state.height}/>);
+                fractal = (<KochCurve width={this.props.width} height={this.props.height}/>);
                 break;
               case "mandelbrot":
-                fractal = (<Mandelbrot options={this.state.options} width={this.state.width} height={this.state.height}/>);
-                overlay = (<MandelbrotOverlay options={this.state.options} onChange={this.setOptions} width={width} height={height}/>);
+                fractal = (<Mandelbrot width={this.props.width} height={this.props.height}/>);
+                overlay = (<MandelbrotOverlay width={this.props.width} height={this.props.height}/>);
                 break;
               case "sierpinskiCarpet":
-                fractal = (<SierpinskiCarpet width={this.state.width} height={this.state.height}/>);
+                fractal = (<SierpinskiCarpet width={this.props.width} height={this.props.height}/>);
                 break;
               default:
                 break;
@@ -110,7 +101,7 @@ export default class Fractals extends React.Component {
           <h5 className="subtitle is-5">HTML 5</h5>
           <div className="content">
             <label htmlFor="selectFractal">Fractal: </label>
-            <select id="selectFractal" value={this.state.selectedFractal} onChange={this.selectFractal}>
+            <select id="selectFractal" value={this.props.selectedFractal} onChange={this.selectFractal}>
               <option value="mandelbrot">Mandelbrot</option>
               <option value="buddhabrot">Buddhabrot</option>
               <option value="barnsleyFern">Barnsley Fern</option>
@@ -124,3 +115,5 @@ export default class Fractals extends React.Component {
     );
   }
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(Fractals);

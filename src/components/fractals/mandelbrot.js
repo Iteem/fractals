@@ -2,6 +2,7 @@ import React from 'react';
 import * as scaleChromatic from "d3-scale-chromatic";
 import * as scale from "d3-scale";
 import * as color from "d3-color";
+import {connect} from "react-redux";
 
 const maxIterations = 200;
 const colorRepetition = 15;
@@ -12,7 +13,15 @@ const bailoutRadius = Math.pow(2, 8);
 const bailoutRadiusSqrd = bailoutRadius * bailoutRadius;
 const colorBlack = color.rgb(0,0,0);
 
-export default class KochCurve extends React.Component {
+const mapStateToProps = state => {
+  return {
+    width: state.general.width,
+    height: state.general.height,
+    options: state.mandelbrot
+  }
+};
+
+class Mandelbrot extends React.Component {
   componentDidMount()
   {
     this.ct = {canceled: false};
@@ -37,16 +46,16 @@ export default class KochCurve extends React.Component {
     async function mandelbrot(options, width, height) {
       const xScale = scale.scaleLinear()
         .domain([0, width])
-        .range(options.mandelbrot.xExtent);
+        .range(options.xExtent);
 
       const aspectRatio = width / height;
       const extent = (xScale.range()[1] - xScale.range()[0]) / aspectRatio / 2;
       const yScale = scale.scaleLinear()
         .domain([0, height])
-        .range([extent + options.mandelbrot.yCenter, -extent + options.mandelbrot.yCenter]);
+        .range([extent + options.yCenter, -extent + options.yCenter]);
 
       // We could use colorScaleTemp here directly, but we cache it for much better performance.
-      const colorScaleTemp = scale.scaleSequential(getInterpolatorFromOptions(options.mandelbrot.colorScheme));
+      const colorScaleTemp = scale.scaleSequential(getInterpolatorFromOptions(options.colorScheme));
       const colorScaleCache = new Array(1001);
       for (let i = 0; i < colorScaleCache.length; i++) {
         colorScaleCache[i] = color.rgb(colorScaleTemp(i / (colorScaleCache.length - 1)));
@@ -168,3 +177,5 @@ export default class KochCurve extends React.Component {
     return (<canvas height={this.props.height} width={this.props.width} ref={canvas => this.canvas = canvas}/>);
   }
 }
+
+export default connect(mapStateToProps)(Mandelbrot)
