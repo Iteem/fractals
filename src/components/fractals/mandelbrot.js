@@ -1,9 +1,9 @@
 import React, {Fragment} from 'react';
-import * as scaleChromatic from "d3-scale-chromatic";
 import * as scale from "d3-scale";
 import * as color from "d3-color";
 import {connect} from "react-redux";
 import MandelbrotOverlay from "./mandelbrot/mandelbrotOverlay";
+import {getInterpolatorFromOptions} from "../../services/interpolators";
 
 const maxIterations = 200;
 const colorRepetition = 15;
@@ -126,48 +126,6 @@ class Mandelbrot extends React.Component {
 
     function lengthSquared(cx, cy) {
       return cx * cx + cy * cy;
-    }
-
-    function getInterpolatorFromOptions(colorScheme){
-      const colorSchemes = {
-        Blues: scaleChromatic.interpolateBlues,
-        Oranges: scaleChromatic.interpolateOranges,
-        Greens: scaleChromatic.interpolateGreens,
-        Greys: scaleChromatic.interpolateGreys,
-        Purples: scaleChromatic.interpolatePurples,
-        Reds: scaleChromatic.interpolateReds,
-        BrBG: scaleChromatic.interpolateBrBG,
-        PRGn: scaleChromatic.interpolatePRGn,
-        PiYG: scaleChromatic.interpolatePiYG,
-        PuOr: scaleChromatic.interpolatePuOr,
-        RdBu: scaleChromatic.interpolateRdBu,
-        RdGy: scaleChromatic.interpolateRdGy,
-        RdYlBu: scaleChromatic.interpolateRdYlBu,
-        RdYlGn: scaleChromatic.interpolateRdYlGn,
-        Spectral: scaleChromatic.interpolateSpectral,
-        Viridis: scaleChromatic.interpolateViridis,
-        Inferno: scaleChromatic.interpolateInferno,
-        Magma: scaleChromatic.interpolateMagma,
-        Plasma: scaleChromatic.interpolatePlasma,
-        Warm: scaleChromatic.interpolateWarm,
-        Cool: scaleChromatic.interpolateCool,
-        CubehelixDefault: scaleChromatic.interpolateCubehelixDefault,
-        BuGn: scaleChromatic.interpolateBuGn,
-        BuPu: scaleChromatic.interpolateBuPu,
-        GnBu: scaleChromatic.interpolateGnBu,
-        OrRd: scaleChromatic.interpolateOrRd,
-        PuBuGn: scaleChromatic.interpolatePuBuGn,
-        PuBu: scaleChromatic.interpolatePuBu,
-        PuRd: scaleChromatic.interpolatePuRd,
-        RdPu: scaleChromatic.interpolateRdPu,
-        YlGnBu: scaleChromatic.interpolateYlGnBu,
-        YlGn: scaleChromatic.interpolateYlGn,
-        YlOrBr: scaleChromatic.interpolateYlOrBr,
-        YlOrRd: scaleChromatic.interpolateYlOrRd,
-        Rainbow: scaleChromatic.interpolateRainbow,
-        Sinebow: scaleChromatic.interpolateSinebow,
-      };
-      return colorSchemes[colorScheme] || scaleChromatic.interpolateBlues;
     }
 
     mandelbrot(this.props.options, this.props.width, this.props.height);

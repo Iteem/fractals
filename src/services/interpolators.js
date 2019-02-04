@@ -1,0 +1,43 @@
+import * as scaleChromatic from "d3-scale-chromatic";
+
+export function getInterpolatorFromOptions(colorScheme){
+  const colorSchemes = {
+    Blues: scaleChromatic.interpolateBlues,
+    Oranges: scaleChromatic.interpolateOranges,
+    Greens: scaleChromatic.interpolateGreens,
+    Greys: scaleChromatic.interpolateGreys,
+    Purples: scaleChromatic.interpolatePurples,
+    Reds: scaleChromatic.interpolateReds,
+    BrBG: scaleChromatic.interpolateBrBG,
+    PRGn: scaleChromatic.interpolatePRGn,
+    PiYG: scaleChromatic.interpolatePiYG,
+    PuOr: scaleChromatic.interpolatePuOr,
+    RdBu: scaleChromatic.interpolateRdBu,
+    RdGy: scaleChromatic.interpolateRdGy,
+    RdYlBu: scaleChromatic.interpolateRdYlBu,
+    RdYlGn: scaleChromatic.interpolateRdYlGn,
+    Spectral: scaleChromatic.interpolateSpectral,
+    Viridis: scaleChromatic.interpolateViridis,
+    Inferno: scaleChromatic.interpolateInferno,
+    Magma: scaleChromatic.interpolateMagma,
+    Plasma: scaleChromatic.interpolatePlasma,
+    Warm: scaleChromatic.interpolateWarm,
+    Cool: scaleChromatic.interpolateCool,
+    CubehelixDefault: scaleChromatic.interpolateCubehelixDefault,
+    BuGn: scaleChromatic.interpolateBuGn,
+    BuPu: scaleChromatic.interpolateBuPu,
+    GnBu: scaleChromatic.interpolateGnBu,
+    OrRd: scaleChromatic.interpolateOrRd,
+    PuBuGn: scaleChromatic.interpolatePuBuGn,
+    PuBu: scaleChromatic.interpolatePuBu,
+    PuRd: scaleChromatic.interpolatePuRd,
+    RdPu: scaleChromatic.interpolateRdPu,
+    YlGnBu: scaleChromatic.interpolateYlGnBu,
+    YlGn: scaleChromatic.interpolateYlGn,
+    YlOrBr: scaleChromatic.interpolateYlOrBr,
+    YlOrRd: scaleChromatic.interpolateYlOrRd,
+    Rainbow: scaleChromatic.interpolateRainbow,
+    Sinebow: scaleChromatic.interpolateSinebow,
+  };
+  return colorSchemes[colorScheme] || scaleChromatic.interpolateBlues;
+}
