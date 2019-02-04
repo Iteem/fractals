@@ -1,4 +1,4 @@
-import React from "react"
+import React, {Fragment} from "react"
 import {setBuddhabrotOptions} from "../../../actions/actions";
 import {connect} from "react-redux";
 
@@ -57,32 +57,45 @@ class BuddhabrotOptions extends React.Component {
 
   render() {
     return (
-      <div className="content">
-        <label>
-          <input type="checkbox" checked={this.props.options.greyscale} onChange={this.setGreyScale}/>
-          Greyscale
-        </label>
-        <br/>
-        <label>
-          <input type="range" name="r" min="0" max="10" step="0.01" value={this.props.options.exposure[0]} onChange={this.setExposure}/>
-          Red
-        </label>
-        <br/>
-        <label>
-          <input type="range" name="g" min="0" max="10" step="0.01" value={this.props.options.exposure[1]} onChange={this.setExposure}/>
-          Green
-        </label>
-        <br/>
-        <label>
-          <input type="range" name="b" min="0" max="10" step="0.01" value={this.props.options.exposure[2]} onChange={this.setExposure}/>
-          Blue
-        </label>
-        <br/>
-        <label>
-          <input type="range" name="b" min="0.01" max="10" step="0.01" value={this.props.options.gamma} onChange={this.setGamma}/>
-          Gamma
-        </label>
-      </div>
+      <Fragment>
+        <div className="field">
+          <div className="control">
+            <label className="checkbox">
+              <input type="checkbox" checked={this.props.options.greyscale} onChange={this.setGreyScale}/>{' '}
+              Greyscale
+            </label>
+          </div>
+        </div>
+
+        <div className="field">
+          <label className="label">Red ({this.props.options.exposure[0]})</label>
+          <div className="control">
+            <input type="range" name="r" min="0" max="10" step="0.01" value={this.props.options.exposure[0]} onChange={this.setExposure}/>
+
+          </div>
+        </div>
+
+        <div className="field">
+          <label className="label">Green ({this.props.options.exposure[1]})</label>
+          <div className="control">
+            <input type="range" name="g" min="0" max="10" step="0.01" value={this.props.options.exposure[1]} onChange={this.setExposure}/>
+          </div>
+        </div>
+
+        <div className="field">
+          <label className="label">Blue ({this.props.options.exposure[2]})</label>
+          <div className="control">
+            <input type="range" name="b" min="0" max="10" step="0.01" value={this.props.options.exposure[2]} onChange={this.setExposure}/>
+          </div>
+        </div>
+
+        <div className="field">
+          <label className="label">Gamma ({this.props.options.gamma})</label>
+          <div className="control">
+            <input type="range" name="gamma" min="0.05" max="5" step="0.01" value={this.props.options.gamma} onChange={this.setGamma}/>
+          </div>
+        </div>
+      </Fragment>
     );
   }
 }

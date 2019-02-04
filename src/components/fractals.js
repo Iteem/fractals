@@ -93,15 +93,17 @@ class Fractals extends React.Component {
         <div className="box fractal-options" style={{position: "absolute", margin: "2rem"}}>
           <h3 className="title is-3">Fractals</h3>
           <h5 className="subtitle is-5">HTML 5</h5>
-          <div className="content">
-            <label htmlFor="selectFractal">Fractal: </label>
-            <select id="selectFractal" value={this.props.selectedFractal} onChange={this.selectFractal}>
-              <option value="mandelbrot">Mandelbrot</option>
-              <option value="buddhabrot">Buddhabrot</option>
-              <option value="barnsleyFern">Barnsley Fern</option>
-              <option value="kochCurve">Koch Curve</option>
-              <option value="sierpinskiCarpet">Sierpinski Carpet</option>
-            </select>
+          <div className="field">
+            <label className="label" htmlFor="selectFractal">Fractal</label>
+            <div className="control">
+              <select id="selectFractal" value={this.props.selectedFractal} onChange={this.selectFractal}>
+                <option value="mandelbrot">Mandelbrot</option>
+                <option value="buddhabrot">Buddhabrot</option>
+                <option value="barnsleyFern">Barnsley Fern</option>
+                <option value="kochCurve">Koch Curve</option>
+                <option value="sierpinskiCarpet">Sierpinski Carpet</option>
+              </select>
+            </div>
           </div>
           {options}
         </div>

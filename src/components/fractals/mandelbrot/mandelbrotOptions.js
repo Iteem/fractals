@@ -1,4 +1,4 @@
-import React from "react"
+import React, {Fragment} from "react"
 import {setMandelbrotOptions} from "../../../actions/actions";
 import {connect} from "react-redux";
 
@@ -38,51 +38,59 @@ class MandelbrotOptions extends React.Component {
 
   render() {
     return (
-      <div className="content">
-        <label form="colorScheme">Color Scheme: </label>
-        <select id="colorScheme" value={this.props.options.colorScheme} onChange={this.setColorScheme}>
-          <option value="Blues">Blues</option>
-          <option value="Oranges">Oranges</option>
-          <option value="Greens">Greens</option>
-          <option value="Greys">Greys</option>
-          <option value="Purples">Purples</option>
-          <option value="Reds">Reds</option>
-          <option value="BrBG">BrBG</option>
-          <option value="PRGn">PRGn</option>
-          <option value="PiYG">PiYG</option>
-          <option value="PuOr">PuOr</option>
-          <option value="RdBu">RdBu</option>
-          <option value="RdGy">RdGy</option>
-          <option value="RdYlBu">RdYlBu</option>
-          <option value="RdYlGn">RdYlGn</option>
-          <option value="Spectral">Spectral</option>
-          <option value="Viridis">Viridis</option>
-          <option value="Inferno">Inferno</option>
-          <option value="Magma">Magma</option>
-          <option value="Plasma">Plasma</option>
-          <option value="Warm">Warm</option>
-          <option value="Cool">Cool</option>
-          <option value="CubehelixDefault">CubehelixDefault</option>
-          <option value="BuGn">BuGn</option>
-          <option value="BuPu">BuPu</option>
-          <option value="GnBu">GnBu</option>
-          <option value="OrRd">OrRd</option>
-          <option value="PuBuGn">PuBuGn</option>
-          <option value="PuBu">PuBu</option>
-          <option value="PuRd">PuRd</option>
-          <option value="RdPu">RdPu</option>
-          <option value="YlGnBu">YlGnBu</option>
-          <option value="YlGn">YlGn</option>
-          <option value="YlOrBr">YlOrBr</option>
-          <option value="YlOrRd">YlOrRd</option>
-          <option value="Rainbow">Rainbow</option>
-          <option value="Sinebow">Sinebow</option>
-        </select>
-        <br/>
-        <button onClick={this.resetZoom}>
-          Reset Zoom
-        </button>
-      </div>
+      <Fragment>
+        <div className="field">
+          <label className="label" form="colorScheme">Color Scheme</label>
+          <div className="control">
+            <select id="colorScheme" value={this.props.options.colorScheme} onChange={this.setColorScheme}>
+              <option value="Blues">Blues</option>
+              <option value="Oranges">Oranges</option>
+              <option value="Greens">Greens</option>
+              <option value="Greys">Greys</option>
+              <option value="Purples">Purples</option>
+              <option value="Reds">Reds</option>
+              <option value="BrBG">BrBG</option>
+              <option value="PRGn">PRGn</option>
+              <option value="PiYG">PiYG</option>
+              <option value="PuOr">PuOr</option>
+              <option value="RdBu">RdBu</option>
+              <option value="RdGy">RdGy</option>
+              <option value="RdYlBu">RdYlBu</option>
+              <option value="RdYlGn">RdYlGn</option>
+              <option value="Spectral">Spectral</option>
+              <option value="Viridis">Viridis</option>
+              <option value="Inferno">Inferno</option>
+              <option value="Magma">Magma</option>
+              <option value="Plasma">Plasma</option>
+              <option value="Warm">Warm</option>
+              <option value="Cool">Cool</option>
+              <option value="CubehelixDefault">CubehelixDefault</option>
+              <option value="BuGn">BuGn</option>
+              <option value="BuPu">BuPu</option>
+              <option value="GnBu">GnBu</option>
+              <option value="OrRd">OrRd</option>
+              <option value="PuBuGn">PuBuGn</option>
+              <option value="PuBu">PuBu</option>
+              <option value="PuRd">PuRd</option>
+              <option value="RdPu">RdPu</option>
+              <option value="YlGnBu">YlGnBu</option>
+              <option value="YlGn">YlGn</option>
+              <option value="YlOrBr">YlOrBr</option>
+              <option value="YlOrRd">YlOrRd</option>
+              <option value="Rainbow">Rainbow</option>
+              <option value="Sinebow">Sinebow</option>
+            </select>
+          </div>
+        </div>
+
+        <div className="field">
+          <div className="control">
+            <button className="button" onClick={this.resetZoom}>
+              Reset Zoom
+            </button>
+          </div>
+        </div>
+      </Fragment>
     );
   }
 }
