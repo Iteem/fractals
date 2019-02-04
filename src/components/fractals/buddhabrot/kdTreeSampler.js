@@ -2,7 +2,7 @@ import {getNumIterations} from '../../../services/utils';
 
 // 50 is enough at the resolution of the importanceMap
 const kdTreeMinIterations = 50;
-const maxDepth = 17;
+const maxDepth = 19;
 const maxNoChanges = 4;
 
 export default class KdTreeSampler {

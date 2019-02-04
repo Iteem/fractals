@@ -5,7 +5,9 @@ import {connect} from "react-redux";
 import MandelbrotOverlay from "./mandelbrot/mandelbrotOverlay";
 import {getInterpolatorFromOptions} from "../../services/interpolators";
 
-const maxIterations = 200;
+const minIterations = 250;
+const maxIterations = 2000;
+const iterationExponent = 1/3;
 const colorRepetition = 15;
 const waitTime = 50; // in ms
 // We need this to be bigger then 2 for smooth coloring
@@ -45,6 +47,9 @@ class Mandelbrot extends React.Component {
     let ctx = this.canvas.getContext("2d");
 
     async function mandelbrot(options, width, height) {
+      const iterations = Math.min(minIterations + 2 / Math.pow(options.xExtent[1] - options.xExtent[0], iterationExponent), maxIterations);
+      console.log(iterations, options.xExtent);
+
       const xScale = scale.scaleLinear()
         .domain([0, width])
         .range(options.xExtent);
@@ -90,7 +95,7 @@ class Mandelbrot extends React.Component {
           let cx = xScale(x);
           let i;
 
-          for (i = 0; i < maxIterations; i++) {
+          for (i = 0; i < iterations; i++) {
             let xTmp = zx;
             zx = zx * zx - zy * zy;
             zy = 2 * xTmp * zy;
