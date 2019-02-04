@@ -21,12 +21,26 @@ class MandelbrotOptions extends React.Component {
     super();
 
     this.setColorScheme = this.setColorScheme.bind(this);
+    this.setColorRepetition = this.setColorRepetition.bind(this);
+    this.setColorOffset = this.setColorOffset.bind(this);
     this.resetZoom = this.resetZoom.bind(this);
 
   }
 
   setColorScheme(event){
     this.props.setOptions({colorScheme: event.target.value});
+  }
+
+  setColorRepetition(event){
+    let { value, min, max } = event.target;
+    value = Math.max(Number(min), Math.min(Number(max), Number(value)));
+    this.props.setOptions({colorRepetition: value});
+  }
+
+  setColorOffset(event){
+    let { value, min, max } = event.target;
+    value = Math.max(Number(min), Math.min(Number(max), Number(value)));
+    this.props.setOptions({colorOffset: value});
   }
 
   resetZoom(){
@@ -88,6 +102,20 @@ class MandelbrotOptions extends React.Component {
             <button className="button" onClick={this.resetZoom}>
               Reset Zoom
             </button>
+          </div>
+        </div>
+
+        <div className="field">
+          <label className="label">Color repetition</label>
+          <div className="control">
+            <input className="input" type="number" min={1} max={100} step={1} value={this.props.options.colorRepetition} onChange={this.setColorRepetition}/>
+          </div>
+        </div>
+
+        <div className="field">
+          <label className="label">Color offset</label>
+          <div className="control">
+            <input className="input" type="number" min={0} max={100} step={1} value={this.props.options.colorOffset} onChange={this.setColorOffset}/>
           </div>
         </div>
       </Fragment>

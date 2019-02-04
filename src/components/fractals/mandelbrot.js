@@ -8,7 +8,6 @@ import {getInterpolatorFromOptions} from "../../services/interpolators";
 const minIterations = 250;
 const maxIterations = 2000;
 const iterationExponent = 1/3;
-const colorRepetition = 15;
 const waitTime = 50; // in ms
 // We need this to be bigger then 2 for smooth coloring
 // The smoothing will work well for bailoutRadius >> |c|, so 2^8 is reasonable
@@ -48,7 +47,6 @@ class Mandelbrot extends React.Component {
 
     async function mandelbrot(options, width, height) {
       const iterations = Math.min(minIterations + 2 / Math.pow(options.xExtent[1] - options.xExtent[0], iterationExponent), maxIterations);
-      console.log(iterations, options.xExtent);
 
       const xScale = scale.scaleLinear()
         .domain([0, width])
@@ -114,7 +112,7 @@ class Mandelbrot extends React.Component {
             const log_zn = Math.log( zx*zx + zy*zy ) / Math.log(2) / 2;
             const nu = Math.log(log_zn) / Math.log(2);
             i = i + 1 - nu;
-            const t = (-Math.cos(i / colorRepetition * Math.PI) + 1) / 2;
+            const t = (-Math.cos((i + options.colorOffset) / options.colorRepetition * Math.PI) + 1) / 2;
             col = color.rgb(colorScale(t));
           }
 
