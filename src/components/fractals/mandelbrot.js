@@ -1,8 +1,9 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import * as scaleChromatic from "d3-scale-chromatic";
 import * as scale from "d3-scale";
 import * as color from "d3-color";
 import {connect} from "react-redux";
+import MandelbrotOverlay from "./mandelbrot/mandelbrotOverlay";
 
 const maxIterations = 200;
 const colorRepetition = 15;
@@ -174,7 +175,14 @@ class Mandelbrot extends React.Component {
 
 
   render() {
-    return (<canvas height={this.props.height} width={this.props.width} ref={canvas => this.canvas = canvas}/>);
+    return (
+      <Fragment>
+        <canvas height={this.props.height} width={this.props.width} ref={canvas => this.canvas = canvas}/>
+        <div style={{position: "absolute", top: 0, left: 0, width: "100vw", height: "100vh"}}>
+          <MandelbrotOverlay height={this.props.height} width={this.props.width}/>
+        </div>
+      </Fragment>
+    );
   }
 }
 

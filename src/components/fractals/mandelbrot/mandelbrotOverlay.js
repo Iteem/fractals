@@ -3,7 +3,7 @@ import * as brush from "d3-brush";
 import * as selection from "d3-selection";
 import * as scale from "d3-scale";
 
-import {setMandelbrotOptions} from "../../actions/actions";
+import {setMandelbrotOptions} from "../../../actions/actions";
 import {connect} from "react-redux";
 
 const mapStateToProps = state => {

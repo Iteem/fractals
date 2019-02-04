@@ -1,5 +1,5 @@
 import React from "react"
-import {setBuddhabrotOptions} from "../../actions/actions";
+import {setBuddhabrotOptions} from "../../../actions/actions";
 import {connect} from "react-redux";
 
 const mapStateToProps = state => {

@@ -1,5 +1,5 @@
 import React from "react"
-import {setMandelbrotOptions} from "../../actions/actions";
+import {setMandelbrotOptions} from "../../../actions/actions";
 import {connect} from "react-redux";
 
 const mapStateToProps = state => {

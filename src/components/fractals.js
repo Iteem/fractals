@@ -4,10 +4,9 @@ import BarnsleyFern from "./fractals/barnsleyFern"
 import KochCurve from "./fractals/kochCurve"
 import SierpinskiCarpet from "./fractals/sierpinskiCarpet"
 import Buddhabrot from "./fractals/buddhabrot"
-import BuddhabrotOptions from './options/buddhabrotOptions';
+import BuddhabrotOptions from './fractals/buddhabrot/buddhabrotOptions';
 import Mandelbrot from "./fractals/mandelbrot"
-import MandelbrotOptions from './options/mandelbrotOptions';
-import MandelbrotOverlay from './overlay/mandelbrotOverlay';
+import MandelbrotOptions from './fractals/mandelbrot/mandelbrotOptions';
 import {connect} from "react-redux";
 import {setGeneralOptions} from "../actions/actions";
 
@@ -63,7 +62,6 @@ class Fractals extends React.Component {
       <div style={{height: "100vh", overflow: "hidden"}}>
         <AutoSizer onResize={this.onResize}>
           {({ height, width }) => {
-            let overlay = null;
             let fractal = null;
             switch (this.props.selectedFractal){
               case "barnsleyFern":
@@ -77,7 +75,6 @@ class Fractals extends React.Component {
                 break;
               case "mandelbrot":
                 fractal = (<Mandelbrot width={this.props.width} height={this.props.height}/>);
-                overlay = (<MandelbrotOverlay width={this.props.width} height={this.props.height}/>);
                 break;
               case "sierpinskiCarpet":
                 fractal = (<SierpinskiCarpet width={this.props.width} height={this.props.height}/>);
@@ -89,9 +86,6 @@ class Fractals extends React.Component {
             return (
               <div style={{position: "relative"}}>
                 {fractal}
-                <div style={{position: "absolute", top: 0, left: 0, width: "100vw", height: "100vh"}}>
-                  {overlay}
-                </div>
               </div>
             )
           }}
