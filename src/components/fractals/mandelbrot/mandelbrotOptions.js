@@ -98,14 +98,6 @@ class MandelbrotOptions extends React.Component {
         </div>
 
         <div className="field">
-          <div className="control">
-            <button className="button" onClick={this.resetZoom}>
-              Reset Zoom
-            </button>
-          </div>
-        </div>
-
-        <div className="field">
           <label className="label">Color repetition</label>
           <div className="control">
             <input className="input" type="number" min={1} max={100} step={1} value={this.props.options.colorRepetition} onChange={this.setColorRepetition}/>
@@ -116,6 +108,14 @@ class MandelbrotOptions extends React.Component {
           <label className="label">Color offset</label>
           <div className="control">
             <input className="input" type="number" min={0} max={100} step={1} value={this.props.options.colorOffset} onChange={this.setColorOffset}/>
+          </div>
+        </div>
+
+        <div className="field">
+          <div className="control">
+            <button className="button" onClick={this.resetZoom}>
+              Reset Zoom
+            </button>
           </div>
         </div>
       </Fragment>
