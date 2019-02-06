@@ -8,6 +8,11 @@ export function setMandelbrotOptions(options) {
   return { type: SET_MANDELBROT_OPTIONS, options }
 }
 
+export const SET_JULIASET_OPTIONS = 'SET_JULIASET_OPTIONS';
+export function setJuliaSetOptions(options) {
+  return { type: SET_JULIASET_OPTIONS, options }
+}
+
 export const SET_GENERAL_OPTIONS = 'SET_GENERAL_OPTIONS';
 export function setGeneralOptions(options) {
   return { type: SET_GENERAL_OPTIONS, options }

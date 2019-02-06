@@ -19,7 +19,8 @@ const mapStateToProps = state => {
   return {
     width: state.general.width,
     height: state.general.height,
-    options: state.mandelbrot
+    options: state.mandelbrot,
+    juliaSetOptions: state.juliaSet
   }
 };
 
@@ -45,7 +46,7 @@ class Mandelbrot extends React.Component {
   draw(ct){
     let ctx = this.canvas.getContext("2d");
 
-    async function mandelbrot(options, width, height) {
+    async function mandelbrot(options, width, height, julia) {
       const iterations = Math.min(minIterations + 2 / Math.pow(options.xExtent[1] - options.xExtent[0], iterationExponent), maxIterations);
 
       const xScale = scale.scaleLinear()
@@ -93,16 +94,33 @@ class Mandelbrot extends React.Component {
           let cx = xScale(x);
           let i;
 
-          for (i = 0; i < iterations; i++) {
-            let xTmp = zx;
-            zx = zx * zx - zy * zy;
-            zy = 2 * xTmp * zy;
+          if(julia){
+            zx = cx;
+            zy = cy;
+            for (i = 0; i < iterations; i++) {
+              let xTmp = zx;
+              zx = zx * zx - zy * zy;
+              zy = 2 * xTmp * zy;
 
-            zx += cx;
-            zy += cy;
+              zx += julia.cr;
+              zy += julia.ci;
 
-            if(lengthSquared(zx, zy) > bailoutRadiusSqrd){
-              break;
+              if(lengthSquared(zx, zy) > bailoutRadiusSqrd){
+                break;
+              }
+            }
+          } else {
+            for (i = 0; i < iterations; i++) {
+              let xTmp = zx;
+              zx = zx * zx - zy * zy;
+              zy = 2 * xTmp * zy;
+
+              zx += cx;
+              zy += cy;
+
+              if(lengthSquared(zx, zy) > bailoutRadiusSqrd){
+                break;
+              }
             }
           }
 
@@ -131,7 +149,7 @@ class Mandelbrot extends React.Component {
       return cx * cx + cy * cy;
     }
 
-    mandelbrot(this.props.options, this.props.width, this.props.height);
+    mandelbrot(this.props.options, this.props.width, this.props.height, this.props.julia && this.props.juliaSetOptions);
   }
 
 

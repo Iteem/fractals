@@ -7,6 +7,7 @@ import Buddhabrot from "./fractals/buddhabrot"
 import BuddhabrotOptions from './fractals/buddhabrot/buddhabrotOptions';
 import Mandelbrot from "./fractals/mandelbrot"
 import MandelbrotOptions from './fractals/mandelbrot/mandelbrotOptions';
+import JuliaSetOptions from './fractals/mandelbrot/juliaSetOptions';
 import {connect} from "react-redux";
 import {setGeneralOptions} from "../actions/actions";
 
@@ -54,6 +55,9 @@ class Fractals extends React.Component {
       case "mandelbrot":
         options = (<MandelbrotOptions/>);
         break;
+      case "juliaSet":
+        options = (<JuliaSetOptions/>);
+        break;
       default:
         options = null;
     }
@@ -75,6 +79,9 @@ class Fractals extends React.Component {
                 break;
               case "mandelbrot":
                 fractal = (<Mandelbrot width={this.props.width} height={this.props.height}/>);
+                break;
+              case "juliaSet":
+                fractal = (<Mandelbrot width={this.props.width} height={this.props.height} julia={true}/>);
                 break;
               case "sierpinskiCarpet":
                 fractal = (<SierpinskiCarpet width={this.props.width} height={this.props.height}/>);
@@ -98,6 +105,7 @@ class Fractals extends React.Component {
             <div className="control">
               <select id="selectFractal" value={this.props.selectedFractal} onChange={this.selectFractal}>
                 <option value="mandelbrot">Mandelbrot</option>
+                <option value="juliaSet">Julia Set</option>
                 <option value="buddhabrot">Buddhabrot</option>
                 <option value="barnsleyFern">Barnsley Fern</option>
                 <option value="kochCurve">Koch Curve</option>
