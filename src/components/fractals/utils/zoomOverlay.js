@@ -3,24 +3,7 @@ import * as brush from "d3-brush";
 import * as selection from "d3-selection";
 import * as scale from "d3-scale";
 
-import {setMandelbrotOptions} from "../../../actions/actions";
-import {connect} from "react-redux";
-
-const mapStateToProps = state => {
-  return {
-    options: state.mandelbrot
-  }
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    setOptions: (options) => {
-      dispatch(setMandelbrotOptions(options));
-    }
-  };
-};
-
-class MandelbrotOverlay extends React.Component {
+class ZoomOverlay extends React.Component {
   constructor() {
     super();
 
@@ -89,4 +72,4 @@ class MandelbrotOverlay extends React.Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(MandelbrotOverlay)
+export default ZoomOverlay;

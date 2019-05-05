@@ -2,8 +2,9 @@ import React, {Fragment} from 'react';
 import * as scale from "d3-scale";
 import * as color from "d3-color";
 import {connect} from "react-redux";
-import MandelbrotOverlay from "./mandelbrot/mandelbrotOverlay";
 import {getInterpolatorFromOptions} from "../../services/interpolators";
+import ZoomOverlay from "./utils/zoomOverlay";
+import {setMandelbrotOptions} from "../../actions/actions";
 
 const minIterations = 250;
 const maxIterations = 2000;
@@ -22,6 +23,14 @@ const mapStateToProps = state => {
     options: state.mandelbrot,
     juliaSetOptions: state.juliaSet
   }
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    setOptions: (options) => {
+      dispatch(setMandelbrotOptions(options));
+    }
+  };
 };
 
 class Mandelbrot extends React.Component {
@@ -158,11 +167,11 @@ class Mandelbrot extends React.Component {
       <Fragment>
         <canvas height={this.props.height} width={this.props.width} ref={canvas => this.canvas = canvas}/>
         <div style={{position: "absolute", top: 0, left: 0, width: "100vw", height: "100vh"}}>
-          <MandelbrotOverlay height={this.props.height} width={this.props.width}/>
+          <ZoomOverlay height={this.props.height} width={this.props.width} options={this.props.options} setOptions={this.props.setOptions}/>
         </div>
       </Fragment>
     );
   }
 }
 
-export default connect(mapStateToProps)(Mandelbrot)
+export default connect(mapStateToProps, mapDispatchToProps)(Mandelbrot)
