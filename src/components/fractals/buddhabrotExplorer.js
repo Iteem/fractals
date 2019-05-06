@@ -66,9 +66,6 @@ class BuddhabrotExplorer extends React.Component {
     const yStart = Math.max(0, Math.floor((0.5 - state.yCenter) * numLines - yExtentHalf));
     const yEnd = Math.min(numLines, Math.ceil((0.5 - state.yCenter) * numLines + yExtentHalf));
 
-    console.log(state.yCenter);
-    console.log(xStart, xEnd, yStart, yEnd);
-
     for (let y = yStart; y < yEnd; y++) {
       for (let x = xStart; x < xEnd; x++) {
         let img = new Image();
@@ -83,10 +80,11 @@ class BuddhabrotExplorer extends React.Component {
           // Translate to middle of zoom (time size and numLines since the tile size and number changes depending on zoom level)
           ctx.translate(-((state.xExtent[0] + state.xExtent[1]) - (xExtentStart[0] + xExtentStart[1])) / 2 * size * numLines, (state.yCenter - yCenterStart) * size * numLines);
 
-          ctx.drawImage(img, size * (x - numLines / 2), size * (y - numLines / 2), size, size);
+          const roundedSize = Math.ceil(size);
+          ctx.drawImage(img, Math.floor(roundedSize * (x - numLines / 2)), Math.floor(roundedSize * (y - numLines / 2)), roundedSize + 1, roundedSize + 1);
           // mirror image
           ctx.scale(-1, 1);
-          ctx.drawImage(img, size * (x - numLines / 2), size * (y - numLines / 2), size, size);
+          ctx.drawImage(img, Math.floor(roundedSize * (x - numLines / 2)), Math.floor(roundedSize * (y - numLines / 2)), roundedSize + 1, roundedSize + 1);
         };
         img.src = 'https://s3.eu-central-1.amazonaws.com/iteem-buddhabrot/buddhabrot/buddhabrot_' + depth +'_' + (y + x * numLines) +'.jpg'
       }
