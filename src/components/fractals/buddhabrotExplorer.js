@@ -1,4 +1,5 @@
-import React, {Fragment} from 'react';
+import React, {Fragment} from 'react'
+import * as d3Scale from "d3-scale";
 import {connect} from "react-redux";
 import ZoomOverlay from "./utils/zoomOverlay";
 
@@ -39,35 +40,50 @@ class BuddhabrotExplorer extends React.Component {
 
   draw(ct)
   {
-    const aspectRatio = this.props.width / this.props.height;
-
     let state = this.state;
     let width = this.props.width;
     let height = this.props.height;
+    const aspectRatio = width / height;
 
     let ctx = this.canvas.getContext("2d");
     ctx.clearRect(0,0, this.props.width, this.props.height);
 
-    const numTiles = this.props.width / 512 * ((xExtentStart[1] - xExtentStart[0]) / (state.xExtent[1] - state.xExtent[0]));
+    const numTiles = this.props.width / tileSize * ((xExtentStart[1] - xExtentStart[0]) / (state.xExtent[1] - state.xExtent[0]));
     const depth = Math.min(6, Math.max(1, Math.ceil(Math.log2(numTiles))));
     const numLines = Math.pow(2, depth);
 
-    // Scale tiles such that on max zoom level it fits perfectly
-    const windowScale = Math.min(width / (numLines * tileSize), height / (numLines * tileSize));
-    // Scale on zoom level
-    const scale = windowScale * (xExtentStart[1] - xExtentStart[0]) / (state.xExtent[1] - state.xExtent[0]);
-    const size = tileSize * scale;
+    // These factor exists to account for none square aspect ratios, so the zoom still works correctly
+    const factorX = Math.max(1, aspectRatio);
+    const factorY = Math.max(1, 1/aspectRatio);
 
-    // TODO: this does not always work despite giving a too large area most of the time
-    const xStart = Math.max(0, Math.floor((state.xExtent[0] - xExtentStart[0] - (Math.max(aspectRatio - 1, 0)) / 2) * numLines) - 1);
-    const xEnd = Math.min(numLines / 2, Math.ceil(xStart + (state.xExtent[1] - state.xExtent[0]) * numLines) + 1);
+    const dim = Math.min(this.props.width, this.props.height);
+    const xDim = state.xExtent[1] - state.xExtent[0];
+    const xCenter = (state.xExtent[1] + state.xExtent[0]) / 2;
+    const yCenter = -state.yCenter;
 
-    const yExtentHalf = (xEnd - xStart);
-    const yStart = Math.max(0, Math.floor((0.5 - state.yCenter) * numLines - yExtentHalf));
-    const yEnd = Math.min(numLines, Math.ceil((0.5 - state.yCenter) * numLines + yExtentHalf));
+    // This scale is used to narrow down which tiles to load
+    const tileScale = d3Scale.scaleLinear()
+      .domain(xExtentStart)
+      .range([0, numLines]);
 
-    for (let y = yStart; y < yEnd; y++) {
-      for (let x = xStart; x < xEnd; x++) {
+    const xScale = d3Scale.scaleLinear()
+      .domain([xCenter * factorX - xDim / 2, xCenter * factorX + xDim / 2])
+      .range([-dim / 2, dim / 2]);
+
+    const yScale = d3Scale.scaleLinear()
+      .domain([yCenter * factorX - xDim / 2, yCenter * factorX + xDim / 2])
+      .range([-dim / 2, dim / 2]);
+
+    // Actually calculate which tiles to load
+    const xStart = Math.max(0, Math.floor(tileScale(-Math.abs(xCenter * factorX) - xDim / 2 * factorX)));
+    const xEnd = Math.min(numLines / 2, Math.ceil(tileScale(-Math.abs(xCenter * factorX) + xDim / 2 * factorX)));
+
+    const yStart = Math.max(0, Math.floor(tileScale(yCenter * factorX - xDim / 2 * factorY)));
+    const yEnd = Math.min(numLines, Math.ceil(tileScale(yCenter * factorX + xDim / 2 * factorY)));
+
+    // Load tiles and draw them on load
+    for (let yTile = yStart; yTile < yEnd; yTile++) {
+      for (let xTile = xStart; xTile < xEnd; xTile++) {
         let img = new Image();
         img.onload = function() {
           if(ct.canceled){
@@ -77,16 +93,19 @@ class BuddhabrotExplorer extends React.Component {
           ctx.resetTransform();
           // First translate image to middle of the screen
           ctx.translate(width / 2, height / 2);
-          // Translate to middle of zoom (time size and numLines since the tile size and number changes depending on zoom level)
-          ctx.translate(-((state.xExtent[0] + state.xExtent[1]) - (xExtentStart[0] + xExtentStart[1])) / 2 * size * numLines, (state.yCenter - yCenterStart) * size * numLines);
 
-          const roundedSize = Math.ceil(size);
-          ctx.drawImage(img, Math.floor(roundedSize * (x - numLines / 2)), Math.floor(roundedSize * (y - numLines / 2)), roundedSize + 1, roundedSize + 1);
+          const roundedSize = Math.ceil(xScale(tileScale.invert(1)) - xScale(tileScale.invert(0)));
+          const x = tileScale.invert(xTile);
+          const y = tileScale.invert(yTile);
+
+          ctx.drawImage(img, Math.floor(xScale(x)), Math.floor(yScale(y)), roundedSize + 1, roundedSize + 1);
+          //ctx.fillText(xTile + "," + yTile, Math.floor(xScale(x) + roundedSize / 2), Math.floor(yScale(y) + roundedSize / 2));
           // mirror image
           ctx.scale(-1, 1);
-          ctx.drawImage(img, Math.floor(roundedSize * (x - numLines / 2)), Math.floor(roundedSize * (y - numLines / 2)), roundedSize + 1, roundedSize + 1);
+          ctx.drawImage(img, Math.floor(xScale(x) - 2 * xScale(0)), Math.floor(yScale(y)), roundedSize + 1, roundedSize + 1);
+          //ctx.fillText(xTile + "," + yTile,  Math.floor(xScale(x) - 2*xScale(0) + roundedSize / 2), Math.floor(yScale(y) + roundedSize / 2));
         };
-        img.src = 'https://s3.eu-central-1.amazonaws.com/iteem-buddhabrot/buddhabrot/buddhabrot_' + depth +'_' + (y + x * numLines) +'.jpg'
+        img.src = 'https://s3.eu-central-1.amazonaws.com/iteem-buddhabrot/buddhabrot/buddhabrot_' + depth +'_' + (yTile + xTile * numLines) +'.jpg'
       }
     }
   }
