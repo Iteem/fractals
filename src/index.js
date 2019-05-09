@@ -6,12 +6,15 @@ import * as serviceWorker from './serviceWorker';
 import {createStore} from "redux";
 import {Provider} from "react-redux";
 import reducer from "./reducers/reducer";
+import { BrowserRouter as Router } from 'react-router-dom'
 
 const store = createStore(reducer, process.env.NODE_ENV === "development" && window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
 ReactDOM.render(
   <Provider store={store}>
-    <Fractals/>
+    <Router>
+      <Fractals/>
+    </Router>
   </Provider>,
   document.getElementById('root')
 );

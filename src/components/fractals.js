@@ -11,6 +11,17 @@ import JuliaSetOptions from './fractals/mandelbrot/juliaSetOptions';
 import BuddhabrotExplorer from "./fractals/buddhabrotExplorer";
 import {connect} from "react-redux";
 import {setGeneralOptions} from "../actions/actions";
+import {Switch, Route, withRouter} from "react-router";
+
+const selectOptions = {
+  mandelbrot: "Mandelbrot",
+  juliaSet: "Julia Set",
+  buddhabrot: "Buddhabrot",
+  buddhabrotExplorer: "Buddhabrot Explorer",
+  barnsleyFern: "Barnsley Fern",
+  kochCurve: "Koch Curve",
+  sierpinskiCarpet: "Sierpinski Carpet"
+};
 
 const mapStateToProps = state => {
   return {
@@ -32,11 +43,18 @@ const mapDispatchToProps = dispatch => {
 };
 
 class Fractals extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.onResize = this.onResize.bind(this);
     this.selectFractal = this.selectFractal.bind(this);
+
+    // Select the fractal from path, or initialize a default
+    let fractal = this.props.history.location.pathname.substr(1);
+    fractal = fractal.charAt(fractal.length - 1) === '/' ? fractal.substr(0, fractal.length - 1) : fractal;
+    fractal = selectOptions[fractal] ? fractal : "mandelbrot";
+    this.props.history.replace('/' + fractal);
+    this.props.selectFractal(fractal);
   }
 
   onResize(dimensions){
@@ -44,6 +62,7 @@ class Fractals extends React.Component {
   }
 
   selectFractal(event){
+    this.props.history.push(event.target.value);
     this.props.selectFractal(event.target.value);
   }
 
@@ -63,44 +82,28 @@ class Fractals extends React.Component {
         options = null;
     }
 
+    let optionElems = Object.keys(selectOptions).map((key) => <option value={key} key={key}>{selectOptions[key]}</option>);
+
     return (
       <div style={{height: "100vh", overflow: "hidden"}}>
         <AutoSizer onResize={this.onResize}>
-          {({ height, width }) => {
-            let fractal = null;
-            switch (this.props.selectedFractal){
-              case "barnsleyFern":
-                fractal = (<BarnsleyFern width={this.props.width} height={this.props.height}/>);
-                break;
-              case "buddhabrot":
-                fractal = (<Buddhabrot width={this.props.width} height={this.props.height}/>);
-                break;
-              case "buddhabrotExplorer":
-                fractal = (<BuddhabrotExplorer width={this.props.width} height={this.props.height}/>);
-                break;
-              case "kochCurve":
-                fractal = (<KochCurve width={this.props.width} height={this.props.height}/>);
-                break;
-              case "mandelbrot":
-                fractal = (<Mandelbrot width={this.props.width} height={this.props.height}/>);
-                break;
-              case "juliaSet":
-                fractal = (<Mandelbrot width={this.props.width} height={this.props.height} julia={true}/>);
-                break;
-              case "sierpinskiCarpet":
-                fractal = (<SierpinskiCarpet width={this.props.width} height={this.props.height}/>);
-                break;
-              default:
-                break;
-            }
-
+          {() => {
             return (
               <div style={{position: "relative"}}>
-                {fractal}
+                <Switch>
+                  <Route path="/barnsleyFern" render={() => <BarnsleyFern width={this.props.width} height={this.props.height}/>}/>
+                  <Route path="/buddhabrot" render={() => <Buddhabrot width={this.props.width} height={this.props.height}/>}/>
+                  <Route path="/buddhabrotExplorer" render={() => <BuddhabrotExplorer width={this.props.width} height={this.props.height}/>}/>
+                  <Route path="/kochCurve" render={() => <KochCurve width={this.props.width} height={this.props.height}/>}/>
+                  <Route path="/mandelbrot" render={() => <Mandelbrot width={this.props.width} height={this.props.height}/>}/>
+                  <Route path="/juliaSet" render={() => <Mandelbrot width={this.props.width} height={this.props.height} julia={true}/>}/>
+                  <Route path="/sierpinskiCarpet" render={() => <SierpinskiCarpet width={this.props.width} height={this.props.height}/>}/>
+                </Switch>
               </div>
             )
           }}
         </AutoSizer>
+
         <div className="box fractal-options" style={{position: "absolute", margin: "2rem"}}>
           <h3 className="title is-3">Fractals</h3>
           <h5 className="subtitle is-5">HTML 5</h5>
@@ -108,13 +111,7 @@ class Fractals extends React.Component {
             <label className="label" htmlFor="selectFractal">Fractal</label>
             <div className="control">
               <select id="selectFractal" value={this.props.selectedFractal} onChange={this.selectFractal}>
-                <option value="mandelbrot">Mandelbrot</option>
-                <option value="juliaSet">Julia Set</option>
-                <option value="buddhabrot">Buddhabrot</option>
-                <option value="buddhabrotExplorer">Buddhabrot Explorer</option>
-                <option value="barnsleyFern">Barnsley Fern</option>
-                <option value="kochCurve">Koch Curve</option>
-                <option value="sierpinskiCarpet">Sierpinski Carpet</option>
+                {optionElems}
               </select>
             </div>
           </div>
@@ -125,4 +122,4 @@ class Fractals extends React.Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Fractals);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Fractals));
