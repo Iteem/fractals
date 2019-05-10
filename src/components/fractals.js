@@ -50,10 +50,13 @@ class Fractals extends React.Component {
     this.selectFractal = this.selectFractal.bind(this);
 
     // Select the fractal from path, or initialize a default
-    let fractal = this.props.history.location.pathname.substr(1);
+    let pathFragments = this.props.history.location.pathname.split('/');
+    let fractal = pathFragments[pathFragments.length - 1];
+    this.basename = pathFragments.slice(0, -1).join('/');
     fractal = fractal.charAt(fractal.length - 1) === '/' ? fractal.substr(0, fractal.length - 1) : fractal;
     fractal = selectOptions[fractal] ? fractal : "mandelbrot";
-    this.props.history.replace('/' + fractal);
+
+    this.props.history.replace(fractal);
     this.props.selectFractal(fractal);
   }
 
@@ -91,13 +94,13 @@ class Fractals extends React.Component {
             return (
               <div style={{position: "relative"}}>
                 <Switch>
-                  <Route path="/barnsleyFern" render={() => <BarnsleyFern width={this.props.width} height={this.props.height}/>}/>
-                  <Route path="/buddhabrot" render={() => <Buddhabrot width={this.props.width} height={this.props.height}/>}/>
-                  <Route path="/buddhabrotExplorer" render={() => <BuddhabrotExplorer width={this.props.width} height={this.props.height}/>}/>
-                  <Route path="/kochCurve" render={() => <KochCurve width={this.props.width} height={this.props.height}/>}/>
-                  <Route path="/mandelbrot" render={() => <Mandelbrot width={this.props.width} height={this.props.height}/>}/>
-                  <Route path="/juliaSet" render={() => <Mandelbrot width={this.props.width} height={this.props.height} julia={true}/>}/>
-                  <Route path="/sierpinskiCarpet" render={() => <SierpinskiCarpet width={this.props.width} height={this.props.height}/>}/>
+                  <Route path={this.basename + "/barnsleyFern"} render={() => <BarnsleyFern width={this.props.width} height={this.props.height}/>}/>
+                  <Route path={this.basename + "/buddhabrot"} render={() => <Buddhabrot width={this.props.width} height={this.props.height}/>}/>
+                  <Route path={this.basename + "/buddhabrotExplorer"} render={() => <BuddhabrotExplorer width={this.props.width} height={this.props.height}/>}/>
+                  <Route path={this.basename + "/kochCurve"} render={() => <KochCurve width={this.props.width} height={this.props.height}/>}/>
+                  <Route path={this.basename + "/mandelbrot"} render={() => <Mandelbrot width={this.props.width} height={this.props.height}/>}/>
+                  <Route path={this.basename + "/juliaSet"} render={() => <Mandelbrot width={this.props.width} height={this.props.height} julia={true}/>}/>
+                  <Route path={this.basename + "/sierpinskiCarpet"} render={() => <SierpinskiCarpet width={this.props.width} height={this.props.height}/>}/>
                 </Switch>
               </div>
             )
