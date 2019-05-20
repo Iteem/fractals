@@ -94,7 +94,7 @@ class BuddhabrotExplorer extends React.Component {
           // First translate image to middle of the screen
           ctx.translate(width / 2, height / 2);
 
-          const roundedSize = Math.ceil(xScale(tileScale.invert(1)) - xScale(tileScale.invert(0)) + 0.5);
+          const roundedSize = Math.ceil(xScale(tileScale.invert(1)) - xScale(tileScale.invert(0)) + 1);
           const x = tileScale.invert(xTile);
           const y = tileScale.invert(yTile);
 
