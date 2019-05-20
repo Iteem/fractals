@@ -58,6 +58,6 @@ export default class BarnsleyFarn extends React.Component {
 
 
   render() {
-    return (<canvas height={this.props.height} width={this.props.width} ref={canvas => this.canvas = canvas}/>);
+    return (<canvas height={this.props.height} width={this.props.width} ref={canvas => this.canvas = canvas} style={{width: this.props.screenWidth, height: this.props.screenHeight}}/>);
   }
 }

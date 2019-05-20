@@ -94,15 +94,15 @@ class BuddhabrotExplorer extends React.Component {
           // First translate image to middle of the screen
           ctx.translate(width / 2, height / 2);
 
-          const roundedSize = Math.ceil(xScale(tileScale.invert(1)) - xScale(tileScale.invert(0)));
+          const roundedSize = Math.ceil(xScale(tileScale.invert(1)) - xScale(tileScale.invert(0)) + 0.5);
           const x = tileScale.invert(xTile);
           const y = tileScale.invert(yTile);
 
-          ctx.drawImage(img, Math.floor(xScale(x)), Math.floor(yScale(y)), roundedSize + 1, roundedSize + 1);
+          ctx.drawImage(img, Math.floor(xScale(x)), Math.floor(yScale(y)), roundedSize, roundedSize);
           //ctx.fillText(xTile + "," + yTile, Math.floor(xScale(x) + roundedSize / 2), Math.floor(yScale(y) + roundedSize / 2));
           // mirror image
           ctx.scale(-1, 1);
-          ctx.drawImage(img, Math.floor(xScale(x) - 2 * xScale(0)), Math.floor(yScale(y)), roundedSize + 1, roundedSize + 1);
+          ctx.drawImage(img, Math.floor(xScale(x) - 2 * xScale(0)), Math.floor(yScale(y)), roundedSize, roundedSize);
           //ctx.fillText(xTile + "," + yTile,  Math.floor(xScale(x) - 2*xScale(0) + roundedSize / 2), Math.floor(yScale(y) + roundedSize / 2));
         };
         img.src = 'https://s3.eu-central-1.amazonaws.com/iteem-buddhabrot/buddhabrot/buddhabrot_' + depth +'_' + (yTile + xTile * numLines) +'.jpg'
@@ -113,9 +113,9 @@ class BuddhabrotExplorer extends React.Component {
   render() {
     return (
       <Fragment>
-        <canvas height={this.props.height} width={this.props.width} ref={canvas => this.canvas = canvas} style={{backgroundColor: "black"}}/>
+        <canvas height={this.props.height} width={this.props.width} ref={canvas => this.canvas = canvas} style={{backgroundColor: "black", width: this.props.screenWidth, height: this.props.screenHeight}}/>
         <div style={{position: "absolute", top: 0, left: 0, width: "100vw", height: "100vh"}}>
-          <ZoomOverlay height={this.props.height} width={this.props.width} options={this.state} setOptions={this.setState.bind(this)}/>
+          <ZoomOverlay height={this.props.screenHeight} width={this.props.screenWidth} options={this.state} setOptions={this.setState.bind(this)}/>
         </div>
       </Fragment>
     );

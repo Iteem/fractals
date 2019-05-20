@@ -87,6 +87,12 @@ class Fractals extends React.Component {
 
     let optionElems = Object.keys(selectOptions).map((key) => <option value={key} key={key}>{selectOptions[key]}</option>);
 
+    const dpr = window.devicePixelRatio || 1;
+    const screenWidth = this.props.width;
+    const screenHeight = this.props.height;
+    const width = Math.round(screenWidth * dpr);
+    const height = Math.round(screenHeight * dpr);
+
     return (
       <div style={{height: "100vh", overflow: "hidden"}}>
         <AutoSizer onResize={this.onResize}>
@@ -94,13 +100,13 @@ class Fractals extends React.Component {
             return (
               <div style={{position: "relative"}}>
                 <Switch>
-                  <Route path={this.basename + "/barnsleyFern"} render={() => <BarnsleyFern width={this.props.width} height={this.props.height}/>}/>
-                  <Route path={this.basename + "/buddhabrot"} render={() => <Buddhabrot width={this.props.width} height={this.props.height}/>}/>
-                  <Route path={this.basename + "/buddhabrotExplorer"} render={() => <BuddhabrotExplorer width={this.props.width} height={this.props.height}/>}/>
-                  <Route path={this.basename + "/kochCurve"} render={() => <KochCurve width={this.props.width} height={this.props.height}/>}/>
-                  <Route path={this.basename + "/mandelbrot"} render={() => <Mandelbrot width={this.props.width} height={this.props.height}/>}/>
-                  <Route path={this.basename + "/juliaSet"} render={() => <Mandelbrot width={this.props.width} height={this.props.height} julia={true}/>}/>
-                  <Route path={this.basename + "/sierpinskiCarpet"} render={() => <SierpinskiCarpet width={this.props.width} height={this.props.height}/>}/>
+                  <Route path={this.basename + "/barnsleyFern"} render={() => <BarnsleyFern width={width} height={height} screenWidth={screenWidth} screenHeight={screenHeight}/>}/>
+                  <Route path={this.basename + "/buddhabrot"} render={() => <Buddhabrot width={width} height={height} screenWidth={screenWidth} screenHeight={screenHeight}/>}/>
+                  <Route path={this.basename + "/buddhabrotExplorer"} render={() => <BuddhabrotExplorer width={width} height={height} screenWidth={screenWidth} screenHeight={screenHeight}/>}/>
+                  <Route path={this.basename + "/kochCurve"} render={() => <KochCurve width={width} height={height} screenWidth={screenWidth} screenHeight={screenHeight}/>}/>
+                  <Route path={this.basename + "/mandelbrot"} render={() => <Mandelbrot width={width} height={height} screenWidth={screenWidth} screenHeight={screenHeight}/>}/>
+                  <Route path={this.basename + "/juliaSet"} render={() => <Mandelbrot width={width} height={height} screenWidth={screenWidth} screenHeight={screenHeight} julia={true}/>}/>
+                  <Route path={this.basename + "/sierpinskiCarpet"} render={() => <SierpinskiCarpet width={width} height={height} screenWidth={screenWidth} screenHeight={screenHeight}/>}/>
                 </Switch>
               </div>
             )

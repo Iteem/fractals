@@ -18,8 +18,6 @@ const colorBlack = color.rgb(0,0,0);
 
 const mapStateToProps = state => {
   return {
-    width: state.general.width,
-    height: state.general.height,
     options: state.mandelbrot,
     juliaSetOptions: state.juliaSet
   }
@@ -165,9 +163,9 @@ class Mandelbrot extends React.Component {
   render() {
     return (
       <Fragment>
-        <canvas height={this.props.height} width={this.props.width} ref={canvas => this.canvas = canvas}/>
+        <canvas height={this.props.height} width={this.props.width} ref={canvas => this.canvas = canvas} style={{width: this.props.screenWidth, height: this.props.screenHeight}}/>
         <div style={{position: "absolute", top: 0, left: 0, width: "100vw", height: "100vh"}}>
-          <ZoomOverlay height={this.props.height} width={this.props.width} options={this.props.options} setOptions={this.props.setOptions}/>
+          <ZoomOverlay height={this.props.screenHeight} width={this.props.screenWidth} options={this.props.options} setOptions={this.props.setOptions}/>
         </div>
       </Fragment>
     );
