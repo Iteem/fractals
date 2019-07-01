@@ -2,7 +2,7 @@ import React from 'react';
 import { AutoSizer } from 'react-virtualized'
 import BarnsleyFern from "./fractals/barnsleyFern"
 import KochCurve from "./fractals/kochCurve"
-import SierpinskiCarpet from "./fractals/sierpinskiCarpet"
+import Sierpinski from "./fractals/sierpinski"
 import Buddhabrot from "./fractals/buddhabrot"
 import BuddhabrotOptions from './fractals/buddhabrot/buddhabrotOptions';
 import Mandelbrot from "./fractals/mandelbrot"
@@ -20,7 +20,8 @@ const selectOptions = {
   buddhabrotExplorer: "Buddhabrot Explorer",
   barnsleyFern: "Barnsley Fern",
   kochCurve: "Koch Curve",
-  sierpinskiCarpet: "Sierpinski Carpet"
+  sierpinskiCarpet: "Sierpinski Carpet",
+  sierpinskiTriangle: "Sierpinski Triangle"
 };
 
 const mapStateToProps = state => {
@@ -106,7 +107,8 @@ class Fractals extends React.Component {
                   <Route path={this.basename + "/kochCurve"} render={() => <KochCurve width={width} height={height} screenWidth={screenWidth} screenHeight={screenHeight}/>}/>
                   <Route path={this.basename + "/mandelbrot"} render={() => <Mandelbrot width={width} height={height} screenWidth={screenWidth} screenHeight={screenHeight}/>}/>
                   <Route path={this.basename + "/juliaSet"} render={() => <Mandelbrot width={width} height={height} screenWidth={screenWidth} screenHeight={screenHeight} julia={true}/>}/>
-                  <Route path={this.basename + "/sierpinskiCarpet"} render={() => <SierpinskiCarpet width={width} height={height} screenWidth={screenWidth} screenHeight={screenHeight}/>}/>
+                  <Route path={this.basename + "/sierpinskiCarpet"} render={() => <Sierpinski width={width} height={height} screenWidth={screenWidth} screenHeight={screenHeight}/>}/>
+                  <Route path={this.basename + "/sierpinskiTriangle"} render={() => <Sierpinski width={width} height={height} screenWidth={screenWidth} screenHeight={screenHeight} triangle={true}/>}/>
                 </Switch>
               </div>
             )
