@@ -70,6 +70,11 @@ class Fractals extends React.Component {
     this.props.selectFractal(event.target.value);
   }
 
+  download = () => {
+    let image = document.getElementsByTagName("canvas")[0].toDataURL("image/jpeg", 0.9);
+    this.downloadLink.setAttribute("href", image);
+  };
+
   render() {
     let options;
     switch (this.props.selectedFractal){
@@ -127,6 +132,9 @@ class Fractals extends React.Component {
             </div>
           </div>
           {options}
+          <a download="fractal.jpg" ref={link => this.downloadLink = link}>
+            <button onClick={this.download} className="button">Download</button>
+          </a>
         </div>
       </div>
     );

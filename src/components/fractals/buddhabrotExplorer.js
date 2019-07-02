@@ -85,6 +85,10 @@ class BuddhabrotExplorer extends React.Component {
     for (let yTile = yStart; yTile < yEnd; yTile++) {
       for (let xTile = xStart; xTile < xEnd; xTile++) {
         let img = new Image();
+
+        // This is need to keep the canvas 'untainted' so we can export it to an image to download.
+        img.setAttribute('crossOrigin', 'anonymous');
+
         img.onload = function() {
           if(ct.canceled){
             return;
